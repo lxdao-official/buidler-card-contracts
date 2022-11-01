@@ -26,7 +26,7 @@ npm run test
 
 ```
 npm run compile
-npm run deploy:rinkeby
+npm run deploy:goerli
 ```
 
 When your deployment is complete, the `SIGNER` in the .env file will be the first `SIGNER` of the contract (which you can change later by using `setSigner`)

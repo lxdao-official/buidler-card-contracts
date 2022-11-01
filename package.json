@@ -45,8 +45,10 @@
   "scripts": {
     "test": "npx hardhat test",
     "compile": "npx hardhat compile",
+    "deploy:goerli": "npx hardhat run scripts/deploy.ts --network goerli",
     "deploy:rinkeby": "npx hardhat run scripts/deploy.ts --network rinkeby",
     "deploy:mainnet": "npx hardhat run scripts/deploy.ts --network mainnet",
+    "verify:goerli": "npx hardhat verify YOUR_CONTRACT SIGNER --network goerli",
     "verify:rinkeby": "npx hardhat verify YOUR_CONTRACT SIGNER --network rinkeby",
     "verify:mainnet": "npx hardhat verify YOUR_CONTRACT SIGNER --network mainnet"
   },
