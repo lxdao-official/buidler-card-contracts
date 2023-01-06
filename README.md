@@ -35,7 +35,7 @@ When your deployment is complete, the `SIGNER` in the .env file will be the firs
 When a new member was added to the community, the signature of `SIGNER` is required, and the signature implementation function is as follows
 
 ```
-iimport bs58 from "bs58";
+import bs58 from "bs58";
 import ethers from "ethers";
 import * as dotenv from 'dotenv';
 dotenv.config();
