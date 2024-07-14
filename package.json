@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.11",
     "@openzeppelin/contracts": "^4.7.2",
     "erc721a": "4.2.2"
   },
@@ -31,7 +32,7 @@
     "eslint-plugin-promise": "^6.0.1",
     "ethereum-waffle": "^3.4.4",
     "ethers": "^5.6.9",
-    "hardhat": "^2.10.2",
+    "hardhat": "^2.22.6",
     "hardhat-abi-exporter": "^2.10.0",
     "hardhat-gas-reporter": "^1.0.8",
     "prettier": "^2.7.1",
@@ -45,9 +46,9 @@
   "scripts": {
     "test": "npx hardhat test",
     "compile": "npx hardhat compile",
-    "deploy:rinkeby": "npx hardhat run scripts/deploy.ts --network rinkeby",
+    "deploy:opSepolia": "npx hardhat run scripts/deploy.ts --network opSepolia",
     "deploy:mainnet": "npx hardhat run scripts/deploy.ts --network mainnet",
-    "verify:rinkeby": "npx hardhat verify YOUR_CONTRACT SIGNER --network rinkeby",
+    "verify:opSepolia": "npx hardhat verify YOUR_CONTRACT SIGNER --network opSepolia",
     "verify:mainnet": "npx hardhat verify YOUR_CONTRACT SIGNER --network mainnet"
   },
   "author": "",
