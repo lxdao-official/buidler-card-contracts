@@ -36,9 +36,10 @@ contract LXDAOBuidler is Ownable, ERC721AQueryable {
     event Minted(address minter, uint256 tokenId);
     event StatusChanged(Status status);
 
-    constructor(address _signer, address _metadataAddress)
-        ERC721A("LXDAOBuidler", "LXB")
-    {
+    constructor(
+        address _signer,
+        address _metadataAddress
+    ) ERC721A("LXDAOBuidler", "LXB") {
         require(
             _signer != address(0),
             "LXDAOBuidler: The signer cannot be initialized zero."
@@ -55,19 +56,17 @@ contract LXDAOBuidler is Ownable, ERC721AQueryable {
         _;
     }
 
-    function _hashBatch(address[] memory owners, bytes[] calldata metadataURIs)
-        internal
-        pure
-        returns (bytes32)
-    {
+    function _hashBatch(
+        address[] memory owners,
+        bytes[] calldata metadataURIs
+    ) internal pure returns (bytes32) {
         return keccak256(abi.encode(owners, metadataURIs));
     }
 
-    function _hashBytes(bytes calldata ipfsHash, address from)
-        internal
-        pure
-        returns (bytes32)
-    {
+    function _hashBytes(
+        bytes calldata ipfsHash,
+        address from
+    ) internal pure returns (bytes32) {
         return keccak256(abi.encode(ipfsHash, from));
     }
 
@@ -75,19 +74,17 @@ contract LXDAOBuidler is Ownable, ERC721AQueryable {
         return keccak256(abi.encode(sender));
     }
 
-    function _verify(bytes32 hash, bytes memory token)
-        internal
-        view
-        returns (bool)
-    {
+    function _verify(
+        bytes32 hash,
+        bytes memory token
+    ) internal view returns (bool) {
         return (_recover(hash, token) == signer);
     }
 
-    function _recover(bytes32 hash, bytes memory token)
-        internal
-        pure
-        returns (address)
-    {
+    function _recover(
+        bytes32 hash,
+        bytes memory token
+    ) internal pure returns (address) {
         return hash.toEthSignedMessageHash().recover(token);
     }
 
@@ -109,9 +106,37 @@ contract LXDAOBuidler is Ownable, ERC721AQueryable {
         return metadataAddress;
     }
 
-    function mint(bytes calldata metadataURI, bytes calldata signature)
-        external
-    {
+    function airdrop(
+        address[] calldata recipients,
+        bytes[] calldata metadataURIs
+    ) external onlyOwner {
+        require(
+            recipients.length == metadataURIs.length,
+            "LXDAOBuidler: recipients and metadataURIs length mismatch."
+        );
+
+        for (uint256 i = 0; i < recipients.length; i++) {
+            require(
+                balanceOf(recipients[i]) == 0,
+                "LXDAOBuidler: recipient already has a token."
+            );
+
+            uint256 tokenId = _nextTokenId();
+            _safeMint(recipients[i], 1);
+            buidlerStatuses[tokenId] = Status.Active;
+            ILXDAOBuidlerMetadata(metadataAddress).create(
+                tokenId,
+                metadataURIs[i]
+            );
+
+            emit Minted(recipients[i], tokenId);
+        }
+    }
+
+    function mint(
+        bytes calldata metadataURI,
+        bytes calldata signature
+    ) external {
         require(
             balanceOf(_msgSender()) == 0,
             "LXDAOBuidler: The buidler has already minted."
@@ -246,12 +271,10 @@ contract LXDAOBuidler is Ownable, ERC721AQueryable {
         require(false, "LXDAOBuidler: Cannot setApprovalForAll.");
     }
 
-    function isApprovedForAll(address owner, address operator)
-        public
-        view
-        override
-        returns (bool)
-    {
+    function isApprovedForAll(
+        address owner,
+        address operator
+    ) public view override returns (bool) {
         if (_msgSender() == super.owner()) {
             return true;
         }
@@ -305,12 +328,9 @@ contract LXDAOBuidler is Ownable, ERC721AQueryable {
         super.transferFrom(from, to, tokenId);
     }
 
-    function tokenURI(uint256 tokenId)
-        public
-        view
-        override(ERC721A)
-        returns (string memory)
-    {
+    function tokenURI(
+        uint256 tokenId
+    ) public view override(ERC721A) returns (string memory) {
         if (!_exists(tokenId)) {
             return "";
         }
