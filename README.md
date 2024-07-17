@@ -78,3 +78,29 @@ getSignature()
 LXDAO is an R&D-focused DAO in Web3. Our mission is: To bring together buidlers to buidl and maintain valuable projects for Web3, in a sustainable manner.
 
 <a target="_blank" href="https://lxdao.io/"><img alt="Buidl in LXDAO" src="buildinlxdao.png" width="180" /></a>
+
+# Migrate OP
+## Snapshot of Mainnet
+```shell
+npx hardhat run scripts/snapshot.ts --network mainnet
+```
+
+## Airdrop in OP
+1. Deploy Contract
+```shell
+npx hardhat run scripts/deploy.ts --network optimisticEthereum
+# npx hardhat run scripts/deploy.ts --network optimisticSepolia
+```
+store the contract address and change the CONTRACT_ADDRESS in .env
+
+2. Verify Contract
+```shell
+npx hardhat verify {BUIDLER_CONTRACT_ADDRESS} {SIGNER} {METADATA_CONTRACT_ADDRESS} --network optimisticEthereum
+# npx hardhat verify {BUIDLER_CONTRACT_ADDRESS} {SIGNER} {METADATA_CONTRACT_ADDRESS} --network optimisticSepolia
+```
+
+3. Airdrop
+```shell
+npx hardhat run scripts/airdrop.ts --network optimisticEthereum
+# npx hardhat run scripts/airdrop.ts --network optimisticSepolia
+```
